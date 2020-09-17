@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using game.control;
 
-namespace game.control
-{
     public class ControllerCamera : MonoBehaviour
     {
+
         [SerializeField]
         private ControllerInputs controllerInputs;
 
@@ -20,7 +18,10 @@ namespace game.control
         // Update is called once per frame
         void Update()
         {
+
+#if UNITY_EDITOR
             RotateCamera();
+#endif
         }
 
 
@@ -34,5 +35,6 @@ namespace game.control
             Quaternion rotation = Quaternion.Euler(euler);
             transform.rotation = rotation;
         }
+
+        
     }
-}
