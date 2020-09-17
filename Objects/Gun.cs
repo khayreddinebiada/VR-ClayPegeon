@@ -4,6 +4,10 @@ namespace game.objects
 {
     public class Gun : MonoBehaviour
     {
+        public Vector3 factorControllerGun = new Vector3(-0.5f, 0.1f, 0);
+        public int gunContain = 0;
+        public int maxBulletInGun = 2;
+        public int maxSavingBullets = 12;
         public bool machineGun;
         public float detlaTimeBetweenBullets = 0.1f;
         public Bullet bullet;

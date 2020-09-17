@@ -16,8 +16,6 @@ namespace game.movement
         private float focusSpeed;
         [SerializeField]
         private float timeWaitingAndReset = 0.2f;
-        [SerializeField]
-        private Vector3 focusRotation;
 
 
         private bool _setReset = false;
@@ -35,6 +33,9 @@ namespace game.movement
 
         private void Update()
         {
+            if (_controllerGun.isCharging || _controllerGun.isStop)
+                return;
+
 #if !UNITY_EDITOR
             ControllerGunRotation();
 #endif
@@ -44,9 +45,10 @@ namespace game.movement
             }
             if (_setShooting)
             {
-                _gun.body.transform.Rotate(focusRotation * focusSpeed * Time.deltaTime);
+                _gun.body.transform.Rotate(_gun.factorControllerGun * focusSpeed * Time.deltaTime);
             }
         }
+
 
         private void ControllerGunRotation()
         {

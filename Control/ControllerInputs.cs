@@ -9,6 +9,7 @@ namespace game.control
         public Vector3 deltaDroping;
         public bool isShootingPress = false;
         public bool isShootingDown = false;
+        public bool isCharging = false;
         // Start is called before the first frame update
         void Start()
         {
@@ -36,11 +37,13 @@ namespace game.control
         private void ControllerShootingInputs()
         {
 #if !UNITY_EDITOR
-            isShootingPress = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.One);
-            isShootingDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.GetDown(OVRInput.Button.One);
+            isShootingPress = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
+            isShootingDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
+            isCharging = OVRInput.GetDown(OVRInput.Button.One);
 #else
             isShootingPress = Input.GetMouseButton(0);
             isShootingDown = Input.GetMouseButtonDown(0);
+            isCharging = Input.GetKeyDown(KeyCode.R);
 #endif
         }
     }
