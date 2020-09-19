@@ -3,6 +3,8 @@ using UnityEngine;
 using game.objects;
 using game.movement;
 using game.animation;
+using game.manager;
+using UnityEngine.Events;
 
 namespace game.control
 {
@@ -14,7 +16,8 @@ namespace game.control
         public Gun gun;
         public bool isCharging = false;
         public bool isStop = false;
-
+        [SerializeField]
+        private UnityEvent shootingEffect;
         [SerializeField]
         private GameObject bullEffectPrefab;
         private ControllerInputs _controllerInputs;
@@ -147,11 +150,17 @@ namespace game.control
             if (_hitPoint.collider != null)
             {
                 GameObject obj = Instantiate(bullEffectPrefab, _hitPoint.point, Quaternion.LookRotation(_hitPoint.normal));
+                Target target = _hitPoint.transform.GetComponent<Target>();
+                if (target != null)
+                {
+                    obj.transform.SetParent(target.body.transform);
+                    target.onHit.Invoke();
+                }
             }
 
             gun.gunContain--;
             _gunMovement.Shooting();
-            
+            shootingEffect.Invoke();
 
         }
         #endregion

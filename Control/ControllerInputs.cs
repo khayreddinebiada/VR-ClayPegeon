@@ -4,8 +4,6 @@ namespace game.control
 {
     public class ControllerInputs : MonoBehaviour
     {
-
-
         public Vector3 deltaDroping;
         public bool isShootingPress = false;
         public bool isShootingDown = false;

@@ -2,7 +2,6 @@
 using UnityEngine;
 using game.control;
 using game.objects;
-using System;
 
 namespace game.movement
 {
