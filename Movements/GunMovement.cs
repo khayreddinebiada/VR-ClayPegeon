@@ -51,7 +51,8 @@ namespace game.movement
 
         private void ControllerGunRotation()
         {
-            transform.rotation = _controllerInputs.GetControllerHandRotation();
+            if(!_controllerGun.controllerZoom.isZoom)
+                transform.rotation = _controllerInputs.GetControllerHandRotation();
         }
 
         private void ResetRotation()

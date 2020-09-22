@@ -8,15 +8,15 @@ namespace game.objects
         public enum TargetType
         {
             Static = 0,
-            Duck = 0,
-            Pigeon  = 0
+            Duck = 1,
+            Pigeon  = 2
         };
 
         public UnityEvent onHit;
 
         [Header("Gizmas")]
         [SerializeField]
-        private bool makeGizmas = false;
+        private bool activateGizmas = false;
         [SerializeField]
         private Color color = Color.red;
 
@@ -24,13 +24,15 @@ namespace game.objects
 
         [Header("Data")]
         [SerializeField]
+        private int score = 0;
+        [SerializeField]
         public TargetType targetType;
         public GameObject body;
-        public float factorPoint;
-        [SerializeField]
-        private Transform center;
+        public Transform center;
         public bool isRemoved = false;
         public float radius = 1;
+        [SerializeField]
+        private float[] scoreRanges;
 
         private void Awake()
         {
@@ -40,11 +42,32 @@ namespace game.objects
 
         private void OnDrawGizmos()
         {
-            if (makeGizmas)
+            if (activateGizmas)
             {
                 Gizmos.color = color;
                 Gizmos.DrawSphere(center.position, radius);
             }
+        }
+
+        public int GetScore()
+        {
+            return score;
+        }
+
+        public void CalculateScoreOnHit(Vector3 hitPointPosition)
+        {
+            float distance = Vector3.Distance(hitPointPosition, center.position) / radius;
+            print(distance);
+            for (int i = 0; i < scoreRanges.Length - 1; i++)
+            {
+                if (scoreRanges[i] <= distance && distance < scoreRanges[i + 1])
+                {
+                    score = 10 - i;
+                    return;
+                }
+            }
+            score = 5;
+            return;
         }
 
         public void StartShowTarget()

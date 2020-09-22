@@ -9,6 +9,8 @@ public class TestButtons : MonoBehaviour
     public Text text4;
     public Text text5;
     public Text text6;
+
+    public Camera[] camera;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,11 +20,8 @@ public class TestButtons : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text1.text = "OVRInput.Button.Down: " + OVRInput.Get(OVRInput.Button.Down).ToString();
-        text2.text = "OVRInput.Button.PrimaryIndexTrigger: " + OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger).ToString();
-        text3.text = "OVRInput.Button.Start: " + OVRInput.Get(OVRInput.Button.Start).ToString();
-        text4.text = "OVRInput.Button.Up: " + OVRInput.Get(OVRInput.Button.Up).ToString();
-        text5.text = "OVRInput.Button.Down: " + OVRInput.Get(OVRInput.Button.Down).ToString();
-        text6.text = "OVRInput.Button.Right: " + OVRInput.Get(OVRInput.Button.Right).ToString();
+        text1.text = "01: " + camera[0].fieldOfView.ToString();
+        text2.text = "02: " + camera[1].fieldOfView.ToString();
+        text3.text = "03: " + camera[2].fieldOfView.ToString();
     }
 }

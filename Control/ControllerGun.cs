@@ -5,6 +5,7 @@ using game.movement;
 using game.animation;
 using game.manager;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace game.control
 {
@@ -12,18 +13,18 @@ namespace game.control
     [RequireComponent(typeof(GunMovement))]
     public class ControllerGun : MonoBehaviour
     {
+        public Text text;
         [Header("Controller Gun")]
         public Gun gun;
+        public ControllerZoom controllerZoom;
         public bool isCharging = false;
         public bool isStop = false;
         [SerializeField]
         private UnityEvent shootingEffect;
         [SerializeField]
+        private UnityEvent onCharge;
+        [SerializeField]
         private GameObject bullEffectPrefab;
-        private ControllerInputs _controllerInputs;
-        private GunMovement _gunMovement;
-        private RaycastHit _hitPoint;
-        private float waitingTime = 0;
 
         [Header("Animation")]
         [SerializeField]
@@ -33,6 +34,8 @@ namespace game.control
         [SerializeField]
         private Transform targetPoint;
         [SerializeField]
+        private Transform zoomTargetPoint;
+        [SerializeField]
         private float scaleOfTargetPoint = 0.65f;
         [SerializeField]
         private LayerMask layerMaskEnvironment;
@@ -41,6 +44,12 @@ namespace game.control
         [SerializeField]
         private float minDistance = 5;
 
+
+
+        private RaycastHit _hitPoint;
+        private float waitingTime = 0;
+        private ControllerInputs _controllerInputs;
+        private GunMovement _gunMovement;
         // Start is called before the first frame update
         void Awake()
         {
@@ -60,22 +69,40 @@ namespace game.control
         // Update is called once per frame
         void Update()
         {
-
-            ControllerTargetPoint();
-
+            text.text = _controllerInputs.isCharging.ToString();
             if (isCharging || isStop)
                 return;
 
             CheckChargeGun();
             ControllerShooting();
+            ChangeZoomMode();
+            ControllerTargetPoint();
         }
 
         #region Gun
+
         private void CheckChargeGun()
         {
             if (_controllerInputs.isCharging || (gun.gunContain == 0 && 0 < gun.maxSavingBullets))
             {
                 ChargeGun();
+            }
+        }
+
+        private void ChangeZoomMode()
+        {
+            if (_controllerInputs.isZoomPress)
+            {
+                if (controllerZoom.isZoom)
+                {
+                    controllerZoom.DeactivateModeZoom();
+                }
+                else
+                {
+                    controllerZoom.ActivateModeZoom();
+                }
+
+                _controllerInputs.isZoomPress = false;
             }
         }
 
@@ -97,6 +124,7 @@ namespace game.control
 
                 // Statements below excute  when player charge the gun.
                 isCharging = true;
+                onCharge.Invoke();
                 gunAnimation.ChargeGun();
                 StartCoroutine(WaitAndDeactivate());
             }
@@ -145,7 +173,11 @@ namespace game.control
 
             float randX = Random.Range(-gun.focusRadius, gun.focusRadius);
             float randY = Random.Range(-gun.focusRadius, gun.focusRadius);
-            Physics.Raycast(transform.position, gun.body.transform.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out _hitPoint, maxDistance, layerMaskEnvironment);
+
+            if(controllerZoom.isZoom)
+                Physics.Raycast(transform.position, controllerZoom.cameraCenterView.transform.TransformDirection(Vector3.forward), out _hitPoint, maxDistance, layerMaskEnvironment);
+            else
+                Physics.Raycast(transform.position, gun.body.transform.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out _hitPoint, maxDistance, layerMaskEnvironment);
 
             if (_hitPoint.collider != null)
             {
@@ -155,6 +187,7 @@ namespace game.control
                 {
                     obj.transform.SetParent(target.body.transform);
                     target.onHit.Invoke();
+                    target.CalculateScoreOnHit(_hitPoint.point);
                 }
             }
 
@@ -169,22 +202,33 @@ namespace game.control
         private void ControllerTargetPoint()
         {
             RaycastHit _hit;
-            if (Physics.Raycast(transform.position, gun.body.transform.TransformDirection(Vector3.forward), out _hit, maxDistance, layerMaskEnvironment))
+            Transform point = targetPoint;
+            Transform center = gun.body.transform;
+
+            if (controllerZoom.isZoom)
+            {
+                point = zoomTargetPoint;
+                center = controllerZoom.cameraCenterView;
+            }
+
+            print(point.name);
+
+            if (Physics.Raycast(transform.position, center.TransformDirection(Vector3.forward), out _hit, maxDistance, layerMaskEnvironment))
             {
                 float scale = Mathf.Clamp((_hit.distance - 5) * scaleOfTargetPoint, 1, Mathf.Infinity);
-                targetPoint.localScale = new Vector3(1, 1, 1) * scale;
-                targetPoint.position = _hit.point;
+                point.localScale = new Vector3(1, 1, 1) * scale;
+                point.position = _hit.point;
 
                 if (_hit.distance <= minDistance)
                 {
-                    targetPoint.localScale = new Vector3(1, 1, 1);
-                    targetPoint.localPosition = Vector3.forward;
+                    point.localScale = new Vector3(1, 1, 1);
+                    point.localPosition = Vector3.forward;
                 }
             }
             else
             {
-                targetPoint.localScale = new Vector3(1, 1, 1) * maxDistance * scaleOfTargetPoint;
-                targetPoint.localPosition = Vector3.forward * maxDistance;
+                point.localScale = new Vector3(1, 1, 1) * maxDistance * scaleOfTargetPoint;
+                point.localPosition = Vector3.forward * maxDistance;
             }
 
         }
