@@ -16,7 +16,6 @@ namespace game.control
         public Text text;
         [Header("Controller Gun")]
         public Gun gun;
-        public ControllerZoom controllerZoom;
         public bool isCharging = false;
         public bool isStop = false;
         [SerializeField]
@@ -75,7 +74,6 @@ namespace game.control
 
             CheckChargeGun();
             ControllerShooting();
-            ChangeZoomMode();
             ControllerTargetPoint();
         }
 
@@ -86,23 +84,6 @@ namespace game.control
             if (_controllerInputs.isCharging || (gun.gunContain == 0 && 0 < gun.maxSavingBullets))
             {
                 ChargeGun();
-            }
-        }
-
-        private void ChangeZoomMode()
-        {
-            if (_controllerInputs.isZoomPress)
-            {
-                if (controllerZoom.isZoom)
-                {
-                    controllerZoom.DeactivateModeZoom();
-                }
-                else
-                {
-                    controllerZoom.ActivateModeZoom();
-                }
-
-                _controllerInputs.isZoomPress = false;
             }
         }
 
@@ -174,10 +155,7 @@ namespace game.control
             float randX = Random.Range(-gun.focusRadius, gun.focusRadius);
             float randY = Random.Range(-gun.focusRadius, gun.focusRadius);
 
-            if(controllerZoom.isZoom)
-                Physics.Raycast(transform.position, controllerZoom.cameraCenterView.transform.TransformDirection(Vector3.forward), out _hitPoint, maxDistance, layerMaskEnvironment);
-            else
-                Physics.Raycast(transform.position, gun.body.transform.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out _hitPoint, maxDistance, layerMaskEnvironment);
+            Physics.Raycast(transform.position, gun.body.transform.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out _hitPoint, maxDistance, layerMaskEnvironment);
 
             if (_hitPoint.collider != null)
             {
@@ -204,14 +182,6 @@ namespace game.control
             RaycastHit _hit;
             Transform point = targetPoint;
             Transform center = gun.body.transform;
-
-            if (controllerZoom.isZoom)
-            {
-                point = zoomTargetPoint;
-                center = controllerZoom.cameraCenterView;
-            }
-
-            print(point.name);
 
             if (Physics.Raycast(transform.position, center.TransformDirection(Vector3.forward), out _hit, maxDistance, layerMaskEnvironment))
             {

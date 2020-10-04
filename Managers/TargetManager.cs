@@ -8,38 +8,52 @@ namespace game.manager
 {
     public class TargetManager : MonoBehaviour
     {
-        public static TargetManager instance;
+        public enum TargetType { OneByOne, AllGroup };
 
+        public static TargetManager instance;
+        [SerializeField]
+        private TargetType targetType = TargetType.OneByOne;
         [SerializeField]
         private UnityEvent onAllTargetsHited;
 
-        public List <Target> targets;
+        private Target[] _targets;
 
         private int targetHited = 0;
         void Awake()
         {
             instance = this;
+            _targets = GetComponentsInChildren<Target>();
         }
 
         // Start is called before the first frame update
         void Start()
         {
-
-            targets[targetHited].StartShowTarget();
+            switch(targetType)
+            {
+                case TargetType.OneByOne:
+                    _targets[targetHited].StartShowTarget();
+                    break;
+                case TargetType.AllGroup:
+                    foreach(Target target in _targets)
+                        target.StartShowTarget();
+                    break;
+            }
+            
         }
 
         public void OnHitOneTarget()
         {
             targetHited++;
 
-            if(targetHited == targets.Count)
+            if(targetHited == _targets.Length)
             {
                 onAllTargetsHited.Invoke();
                 print("Game finished");
             }
             else
             {
-                targets[targetHited].StartShowTarget();
+                if(targetType == TargetType.OneByOne)
+                    _targets[targetHited].StartShowTarget();
             }
         }
     }

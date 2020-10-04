@@ -49,12 +49,6 @@ namespace game.movement
         }
 
 
-        private void ControllerGunRotation()
-        {
-            if(!_controllerGun.controllerZoom.isZoom)
-                transform.rotation = _controllerInputs.GetControllerHandRotation();
-        }
-
         private void ResetRotation()
         {
             _gun.body.transform.localRotation = Quaternion.RotateTowards(_gun.body.transform.localRotation, Quaternion.identity, speedResetRotation * Time.deltaTime);
