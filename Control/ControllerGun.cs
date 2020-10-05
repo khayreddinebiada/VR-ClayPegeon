@@ -156,14 +156,20 @@ namespace game.control
             float randY = Random.Range(-gun.focusRadius, gun.focusRadius);
 
             Physics.Raycast(transform.position, gun.body.transform.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out _hitPoint, maxDistance, layerMaskEnvironment);
-
             if (_hitPoint.collider != null)
             {
-                GameObject obj = Instantiate(bullEffectPrefab, _hitPoint.point, Quaternion.LookRotation(_hitPoint.normal));
+                bool isGlass = _hitPoint.collider.gameObject.CompareTag("Glass");
+                GameObject obj = null;
+                if (!isGlass)
+                {
+                    obj = Instantiate(bullEffectPrefab, _hitPoint.point, Quaternion.LookRotation(_hitPoint.normal));
+                }
                 Target target = _hitPoint.transform.GetComponent<Target>();
                 if (target != null)
                 {
-                    obj.transform.SetParent(target.body.transform);
+                    if (obj != null)
+                        obj.transform.SetParent(target.body.transform);
+
                     target.onHit.Invoke();
                     target.CalculateScoreOnHit(_hitPoint.point);
                 }

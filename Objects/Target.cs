@@ -7,8 +7,8 @@ namespace game.objects
     {
         public enum TargetType
         {
-            Static = 0,
-            Duck = 1,
+            TargetField = 0,
+            Object = 1,
             Pigeon  = 2
         };
 
@@ -56,8 +56,10 @@ namespace game.objects
 
         public void CalculateScoreOnHit(Vector3 hitPointPosition)
         {
+            if (targetType != TargetType.TargetField)
+                return;
+
             float distance = Vector3.Distance(hitPointPosition, center.position) / radius;
-            print(distance);
             for (int i = 0; i < scoreRanges.Length - 1; i++)
             {
                 if (scoreRanges[i] <= distance && distance < scoreRanges[i + 1])
@@ -74,7 +76,7 @@ namespace game.objects
         {
             switch (targetType)
             {
-                case TargetType.Static:
+                case TargetType.TargetField:
                     GetComponent<StaticTarget>().StartShowTarget();
                     break;
             }
