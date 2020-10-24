@@ -2,6 +2,7 @@
 using UnityEngine;
 using game.control;
 using game.objects;
+using game.manager;
 
 namespace game.movement
 {
@@ -32,7 +33,7 @@ namespace game.movement
 
         private void Update()
         {
-            if (_controllerGun.isCharging || _controllerGun.isStop)
+            if (_controllerGun.isCharging || GameManager.instance.GameIsPaused())
                 return;
 
 #if !UNITY_EDITOR
@@ -48,6 +49,10 @@ namespace game.movement
             }
         }
 
+        private void ControllerGunRotation()
+        {
+            transform.rotation = _controllerInputs.GetControllerHandRotation();
+        }
 
         private void ResetRotation()
         {

@@ -5,8 +5,9 @@ namespace game.objects
 {
     [RequireComponent(typeof(Target))]
     [RequireComponent(typeof(BoxCollider))]
-    public class StaticTarget : MonoBehaviour
+    public class MovementTarget : MonoBehaviour
     {
+
         private bool isActivated = false;
         [SerializeField]
         private Transform gotTo;
@@ -25,6 +26,7 @@ namespace game.objects
             _boxCollider = GetComponent<BoxCollider>();
             _target = GetComponent<Target>();
         }
+
         private void Start()
         {
             if (isActivated)
@@ -36,6 +38,7 @@ namespace game.objects
                 _boxCollider.enabled = false;
             }
         }
+
         // Update is called once per frame
         void Update()
         {
@@ -50,6 +53,7 @@ namespace game.objects
                 _target.body.transform.rotation = Quaternion.RotateTowards(_target.body.transform.rotation, transform.rotation, speedRotation * Time.deltaTime);
             }
         }
+
 
         public void StartShowTarget()
         {
@@ -69,6 +73,5 @@ namespace game.objects
             yield return new WaitForSeconds(_waitAndDestroyObject);
             Destroy(this);
         }
-
     }
 }

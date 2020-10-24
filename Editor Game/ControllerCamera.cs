@@ -5,15 +5,15 @@ using game.control;
     public class ControllerCamera : MonoBehaviour
     {
 
-        [SerializeField]
         private ControllerInputs controllerInputs;
 
         [SerializeField]
         private float rotateSpeed;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
+            controllerInputs = GetComponentInChildren<ControllerInputs>();
         }
 
         // Update is called once per frame

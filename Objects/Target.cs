@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using game.manager;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace game.objects
@@ -8,8 +9,8 @@ namespace game.objects
         public enum TargetType
         {
             TargetField = 0,
-            Object = 1,
-            Pigeon  = 2
+            Glass = 1,
+            Object  = 2
         };
 
         public UnityEvent onHit;
@@ -23,6 +24,8 @@ namespace game.objects
 
 
         [Header("Data")]
+        public int index;
+        public bool isScoreByPoints = true;
         [SerializeField]
         private int score = 0;
         [SerializeField]
@@ -31,14 +34,28 @@ namespace game.objects
         public Transform center;
         public bool isRemoved = false;
         public float radius = 1;
+
         [SerializeField]
         private float[] scoreRanges;
 
+        [SerializeField]
+        private bool destroyIfTouchFloor = false;
+
+        private TargetManager targetManager;
+
         private void Awake()
         {
+            index = transform.GetSiblingIndex();
+            targetManager = GetComponentInParent<TargetManager>();
+            onHit.AddListener(() => targetManager.OnHitOneTarget(index));
 
+            if(targetType == TargetType.Glass)
+            {
+                onHit.AddListener(() => {
+                    GetComponent<Animator>().enabled = true;
+                });
+            }
         }
-
 
         private void OnDrawGizmos()
         {
@@ -72,12 +89,27 @@ namespace game.objects
             return;
         }
 
+        public void OnCollisionEnter(Collision collision)
+        {
+            if(collision.gameObject.layer == 8)
+            {
+                if (destroyIfTouchFloor)
+                {
+                    onHit.Invoke();
+                }
+            }
+        }
+        public int GetLastScoreForAdd()
+        {
+            isRemoved = true;
+            return score;
+        }
         public void StartShowTarget()
         {
             switch (targetType)
             {
                 case TargetType.TargetField:
-                    GetComponent<StaticTarget>().StartShowTarget();
+                    GetComponent<MovementTarget>().StartShowTarget();
                     break;
             }
         }

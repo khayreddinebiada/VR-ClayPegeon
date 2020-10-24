@@ -30,8 +30,9 @@ namespace game.control
 
         public Quaternion GetControllerHandRotation()
         {
-
-            return OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTrackedRemote);
+            Quaternion rotation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTrackedRemote);
+            rotation.eulerAngles =  new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y, 0);
+            return rotation;
         }
 
         private void ControllerShootingInputs()
