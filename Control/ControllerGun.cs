@@ -7,6 +7,7 @@ using game.manager;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using game.ui;
+using game.data;
 
 namespace game.control
 {
@@ -15,9 +16,8 @@ namespace game.control
     public class ControllerGun : MonoBehaviour
     {
 
-        public Text text;
         [Header("Controller Gun")]
-        public Gun gun;
+        public GunInfo gun;
         public bool isCharging = false;
         [SerializeField]
         private UnityEvent shootingEffect;

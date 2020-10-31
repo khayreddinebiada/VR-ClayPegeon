@@ -3,6 +3,7 @@ using UnityEngine;
 using game.control;
 using game.objects;
 using game.manager;
+using game.data;
 
 namespace game.movement
 {
@@ -20,7 +21,7 @@ namespace game.movement
 
         private bool _setReset = false;
         private bool _setShooting = false;
-        private Gun _gun;
+        private GunInfo _gun;
         private ControllerGun _controllerGun;
         private ControllerInputs _controllerInputs;
 
@@ -45,7 +46,7 @@ namespace game.movement
             }
             if (_setShooting)
             {
-                _gun.body.transform.Rotate(_gun.factorControllerGun * focusSpeed * Time.deltaTime);
+                _gun.body.transform.Rotate(_gun.movingOnShoot * focusSpeed * Time.deltaTime);
             }
         }
 

@@ -3,6 +3,7 @@ using game.control;
 using System.Collections;
 using UnityEngine.Events;
 using game.ui;
+using game.data;
 
 namespace game.manager
 {
@@ -12,8 +13,6 @@ namespace game.manager
         public static GameManager instance;
         public ControllerGun controllerGun;
         public TargetManager targetManager;
-
-        public GlobalData globalData;
 
         [SerializeField]
         private int minPointsFor2Stars = 20;
@@ -62,6 +61,7 @@ namespace game.manager
             if (minPointsFor3Stars <= targetManager.GetTotalPoints())
             {
                 starsNumber = 3;
+                coinsOnThisLevel = CalculateCoin(starsNumber);
                 MainCanvasManager.instance.PlayerWin((int)time, coinsOnThisLevel, targetManager.GetTotalPoints());
                 onWin.Invoke();
             }
@@ -70,25 +70,26 @@ namespace game.manager
                 if (minPointsFor2Stars <= targetManager.GetTotalPoints())
                 {
                     starsNumber = 2;
+                    coinsOnThisLevel = CalculateCoin(starsNumber);
                     MainCanvasManager.instance.PlayerWin((int)time, coinsOnThisLevel, targetManager.GetTotalPoints());
                     onWin.Invoke();
                 }
                 else
                 {
                     starsNumber = 1;
+                    coinsOnThisLevel = CalculateCoin(starsNumber);
                     MainCanvasManager.instance.PlayerLost((int)time, coinsOnThisLevel, targetManager.GetTotalPoints());
                     onLost.Invoke();
                 }
             }
 
             StartCoroutine(WaitAndMakeAnimation(starsNumber));
-            coinsOnThisLevel = CalculateCoin(starsNumber);
         }
 
         private int CalculateCoin(int stars)
         {
             int coins = (60 - (int)time) * scaleTimeCoin + stars * scaleStarCoin;
-            globalData.AddCoins(coins);
+            GlobalData.AddCoins(coins);
             return coins;
         }
 
