@@ -30,6 +30,14 @@ namespace game.control
         [SerializeField]
         private int shootgunBullets = 3;
 
+        [SerializeField]
+        private Transform _body;
+
+        public Transform body
+        {
+            get { return _body; }
+        }
+
         [Header("Animation")]
         [SerializeField]
         private GunAnimation gunAnimation;
@@ -172,14 +180,14 @@ namespace game.control
             float randY = Random.Range(-gun.focusRadius, gun.focusRadius);
 
             RaycastHit[] _hitPoint;
-            _hitPoint = Physics.RaycastAll(transform.position, gun.body.transform.TransformDirection(Vector3.forward + new Vector3(randX, randY)), maxDistance, layerMaskEnvironment);
+            _hitPoint = Physics.RaycastAll(transform.position, _body.TransformDirection(Vector3.forward + new Vector3(randX, randY)), maxDistance, layerMaskEnvironment);
             foreach (RaycastHit hit in _hitPoint)
             {
                 CheckPointHits(hit);
             }
 
             RaycastHit hitGlass;
-            Physics.Raycast(transform.position, gun.body.transform.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out hitGlass,  maxDistance, layerMaskEnvironment);
+            Physics.Raycast(transform.position, _body.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out hitGlass,  maxDistance, layerMaskEnvironment);
             CheckPointHitsGlass(hitGlass);
 
             loop--;
@@ -227,18 +235,17 @@ namespace game.control
         {
             RaycastHit _hit;
             Transform point = targetPoint;
-            Transform center = gun.body.transform;
-            if (Physics.Raycast(transform.position, center.TransformDirection(Vector3.forward), out _hit, maxDistance, layerMaskEnvironment))
+            if (Physics.Raycast(transform.position, _body.TransformDirection(Vector3.forward), out _hit, maxDistance, layerMaskEnvironment))
             {
                 if (_hit.collider.gameObject.layer == 5 && _controllerInputs.isShootingDown)
                 {
                     Instantiate(bullEffectPrefab, _hit.point, Quaternion.LookRotation(_hit.normal));
-                    VRButton vRButton = _hit.collider.gameObject.GetComponent<VRButton>();
+                    Button button = _hit.collider.gameObject.GetComponent<Button>();
                     _gunMovement.Shooting();
                     shootingEffect.Invoke();
 
-                    if(vRButton != null)
-                        vRButton.onClick.Invoke();
+                    if(button != null)
+                        button.onClick.Invoke();
 
                     return;
                 }

@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 7
   _name: Czech Machine Pistol
-  _unlockLevel: -1
-  _price: -1
+  _unlockLevel: 20
+  _prefabOnPlay: {fileID: 3536013041000414760, guid: c3af3c7673d68dc4d8387c60e5cb6a9d,
+    type: 3}
+  _isShootgun: 0
+  _price: 2000
   _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
   gunContain: 0
   _maxBulletInGun: 2
   maxSavingBullets: 12
   machineGun: 1
   _detlaTimeBetweenBullets: 0.1
-  _bullet: {fileID: 0}
   _focusRadius: 0
-  _body: {fileID: 0}

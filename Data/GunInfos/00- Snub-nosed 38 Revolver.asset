@@ -15,6 +15,9 @@ MonoBehaviour:
   _index: 0
   _name: 'Snub-nosed 38 Revolver '
   _unlockLevel: -1
+  _prefabOnPlay: {fileID: 4370257358559123339, guid: 375239f55f68dee4ba0e090442c449dd,
+    type: 3}
+  _isShootgun: 0
   _price: -1
   _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
   gunContain: 0
@@ -22,6 +25,4 @@ MonoBehaviour:
   maxSavingBullets: 12
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _bullet: {fileID: 0}
   _focusRadius: 0
-  _body: {fileID: 0}

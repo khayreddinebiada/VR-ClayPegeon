@@ -1,7 +1,8 @@
 ﻿using game.data;
 using game.objects;
+using game.ui;
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,6 @@ namespace game.store
     public class Product : MonoBehaviour
     {
 
-        [SerializeField]
-        private bool isBought = false;
         [SerializeField]
         private Button buttonBuy;
         [SerializeField]
@@ -28,102 +27,121 @@ namespace game.store
             get { return _gunInfo; }
             set { _gunInfo = value; }
         }
-
+        private bool isBaught = false;
+        private bool isLock = false;
 
         private static Product lastProductSelected;
-
-        public GunInfo gun
+        private void Start()
         {
-            get { return _gunInfo; }
+            Refresh();
         }
 
-        // Start is called before the first frame update
-        void Start()
+        public void Refresh()
         {
-            if(GlobalData.GetIndexCurrentGun() == _gunInfo.Index)
+            if (GlobalData.GetIndexCurrentGun() == _gunInfo.Index)
             {
+                lastProductSelected = this;
+                isLock = false;
+                isBaught = true;
                 ChoiceThisGun();
+                return;
             }
-            else
+            if (GlobalData.WeHaveThisGun(_gunInfo.Index))
             {
-                if(gun.price == -1 || GlobalData.IsItUnlockedThisGun(_gunInfo.Index))
-                {
-                    SelectableGun();
-                }
-                else
-                {
-                    if (StoreManager.instance.currentLevelIndex <= _gunInfo.unlockLevel)
-                    {
-                        MakeLockGun();
-                    }
-                    else
-                    {
-                        MakeForBuy();
-                    }
-                }
+                isLock = false;
+                isBaught = true;
+                SelectableGun();
+                return;
             }
+            if (StoreManager.instance.currentLevelIndex < _gunInfo.unlockLevel)
+            {
+                isLock = true;
+                MakeLockGun();
+                return;
+            }
+
+            MakeForBuy();
         }
 
-        public void BuyProduct()
+        private void MakeForBuy()
         {
-            if(!isBought && GlobalData.IsItUnlockedThisGun(_gunInfo.Index))
-            {
-                if (gun.price <= GlobalData.TotalCoins())
-                {
-                    DeselectLastProduct();
-                    GlobalData.BuyGun(_gunInfo.Index, gun.price);
-                    isBought = true;
-                    ChoiceThisGun();
-                }
-            }
-        }
-
-        public void SelectGun()
-        {
-            if (isBought)
-            {
-                DeselectLastProduct();
-                ChoiceThisGun();
-            }
+            isLock = false;
+            isBaught = false;
+            buttonSelected.gameObject.SetActive(false);
+            buttonSelect.gameObject.SetActive(false);
+            buttonBuy.gameObject.SetActive(true);
+            LockImage.gameObject.SetActive(false);
         }
 
         private void ChoiceThisGun()
         {
-            isBought = true;
-            GlobalData.SetCurrentGunUsed(_gunInfo.Index);
+            lastProductSelected = this;
             buttonSelected.gameObject.SetActive(true);
             buttonSelect.gameObject.SetActive(false);
+            buttonBuy.gameObject.SetActive(false);
+            LockImage.gameObject.SetActive(false);
+
+        }
+
+        private void DeselectGun()
+        {
+            buttonSelected.gameObject.SetActive(false);
+            buttonSelect.gameObject.SetActive(true);
             buttonBuy.gameObject.SetActive(false);
             LockImage.gameObject.SetActive(false);
         }
 
         private void MakeLockGun()
         {
-            isBought = false;
             buttonSelected.gameObject.SetActive(false);
             buttonSelect.gameObject.SetActive(false);
             buttonBuy.gameObject.SetActive(false);
             LockImage.gameObject.SetActive(true);
         }
-        private void MakeForBuy()
-        {
-            isBought = false;
-        }
 
         private void SelectableGun()
         {
-            isBought = true;
             buttonSelected.gameObject.SetActive(false);
             buttonSelect.gameObject.SetActive(true);
             buttonBuy.gameObject.SetActive(false);
             LockImage.gameObject.SetActive(false);
         }
+
         private void DeselectLastProduct()
         {
             if (lastProductSelected != null)
-                lastProductSelected.gameObject.SetActive(false);
+                lastProductSelected.DeselectGun();
+
             lastProductSelected = this;
         }
 
+        #region Buttons function
+        public void BuyProduct()
+        {
+            if(!isBaught)
+            {
+                if (_gunInfo.price <= GlobalData.TotalCoins())
+                {
+                    isBaught = true;
+                    GlobalData.ChangeIndexCurrentGun(_gunInfo.Index);
+                    GlobalData.MinusCoin(_gunInfo.price);
+                    GlobalData.TakeThisGun(_gunInfo.Index);
+                    DeselectLastProduct();
+                    ChoiceThisGun();
+                }
+            }
+
+            StoreManager.instance.RefreshProductList();
+        }
+
+        public void SelectGun()
+        {
+            if (isBaught)
+            {
+                DeselectLastProduct();
+                ChoiceThisGun();
+            }
+        }
+        #endregion
     }
 }

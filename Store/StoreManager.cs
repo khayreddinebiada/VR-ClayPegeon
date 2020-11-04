@@ -12,13 +12,14 @@ namespace game.store
     {
 
         private static StoreManager _instance;
+
         public static StoreManager instance
         {
             get { return _instance; }
         }
         [SerializeField]
         private GameObject prefabProduct;
-        [SerializeField]
+
         private GunInfo[] _gunInfos;
         public GunInfo[] gunInfos
         {
@@ -37,22 +38,34 @@ namespace game.store
         // Start is called before the first frame update
         void Awake()
         {
+            _instance = this;
+            
+        }
+
+        void Start()
+        {
+            _gunInfos = GlobalData.instance.gunInfos;
             _currentLevelIndex = GlobalData.GetIndexLevelsWin();
+
             products = new Product[_gunInfos.Length];
 
             for (int i = 0; i < _gunInfos.Length; i++)
             {
-                products[i] = Instantiate(prefabProduct, content).GetComponent<Product>();
-                products[i].gunInfo = _gunInfos[i];
-                
+                if (!_gunInfos[i].isShootgun)
+                {
+                    products[i] = Instantiate(prefabProduct, content).GetComponent<Product>();
+                    products[i].gunInfo = _gunInfos[i];
+                }
+
             }
         }
 
-
-        // Update is called once per frame
-        void Update()
+        public void RefreshProductList()
         {
-
+            for (int i = 0; i < _gunInfos.Length; i++)
+                if (!_gunInfos[i].isShootgun)
+                    products[i].Refresh();
         }
+
     }
 }

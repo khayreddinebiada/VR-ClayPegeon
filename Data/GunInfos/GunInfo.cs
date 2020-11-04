@@ -1,9 +1,8 @@
-﻿using game.objects;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace game.data
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "Add Gun", order = 1)]
+    [CreateAssetMenu(fileName = "Gun", menuName = "Add Gun", order = 1)]
     public class GunInfo : ScriptableObject
     {
 
@@ -26,6 +25,20 @@ namespace game.data
         public int unlockLevel
         {
             get { return _unlockLevel; }
+        }
+
+        [SerializeField]
+        private GameObject _prefabOnPlay;
+        public GameObject prefabOnPlay
+        {
+            get { return _prefabOnPlay; }
+        }
+
+        [SerializeField]
+        private bool _isShootgun;
+        public bool isShootgun
+        {
+            get { return _isShootgun; }
         }
 
         [SerializeField]
@@ -66,13 +79,6 @@ namespace game.data
         public float focusRadius
         {
             get { return _focusRadius; }
-        }
-
-        [SerializeField]
-        private GameObject _body;
-        public GameObject body
-        {
-            get { return _body; }
         }
 
     }

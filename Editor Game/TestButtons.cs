@@ -1,27 +1,9 @@
-﻿using UnityEngine;
+﻿using game.data;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class TestButtons : MonoBehaviour
+[CreateAssetMenu(fileName = "test", menuName = "test", order = 1)]
+public class TestButtons : ScriptableObject
 {
-    public Text text1;
-    public Text text2;
-    public Text text3;
-    public Text text4;
-    public Text text5;
-    public Text text6;
-
-    public Camera[] camera;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        text1.text = "01: " + camera[0].fieldOfView.ToString();
-        text2.text = "02: " + camera[1].fieldOfView.ToString();
-        text3.text = "03: " + camera[2].fieldOfView.ToString();
-    }
+    public int test = 0;
 }

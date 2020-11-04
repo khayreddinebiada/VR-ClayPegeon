@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 3
   _name: 9mm Heavy Pistol
-  _unlockLevel: -1
-  _price: -1
+  _unlockLevel: 0
+  _prefabOnPlay: {fileID: 6165312698412690327, guid: 40e7553db37eb964a94bb17e9e6e8610,
+    type: 3}
+  _isShootgun: 0
+  _price: 99999
   _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
   gunContain: 0
-  _maxBulletInGun: 2
-  maxSavingBullets: 12
+  _maxBulletInGun: 8
+  maxSavingBullets: 0
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _bullet: {fileID: 0}
   _focusRadius: 0
-  _body: {fileID: 0}

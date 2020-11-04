@@ -15,6 +15,9 @@ MonoBehaviour:
   _index: 1
   _name: ' Cowboy Rifle'
   _unlockLevel: -1
+  _prefabOnPlay: {fileID: 3508132248569454543, guid: d43ed666c38e49b4ca7b256ba2edda60,
+    type: 3}
+  _isShootgun: 1
   _price: -1
   _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
   gunContain: 0
@@ -22,6 +25,4 @@ MonoBehaviour:
   maxSavingBullets: 12
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _bullet: {fileID: 0}
   _focusRadius: 0
-  _body: {fileID: 0}

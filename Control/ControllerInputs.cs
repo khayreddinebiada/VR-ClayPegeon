@@ -4,11 +4,17 @@ namespace game.control
 {
     public class ControllerInputs : MonoBehaviour
     {
+        public static ControllerInputs instance;
         public Vector3 deltaDroping;
         public bool isShootingPress = false;
         public bool isShootingDown = false;
         public bool isCharging = false;
         public bool isZoomPress = false;
+
+        private void Awake()
+        {
+            instance = this;
+        }
 
         // Start is called before the first frame update
         void Start()

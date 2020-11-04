@@ -4,17 +4,43 @@ using UnityEngine;
 
 namespace game.data
 {
-    public static class GlobalData
+    public class GlobalData : MonoBehaviour
     {
+        private static GlobalData _instance;
+        public static GlobalData instance
+        {
+            get { return _instance; }
+        }
 
+        [SerializeField]
+        private GunInfo[] _gunInfos;
+        public GunInfo[] gunInfos
+        {
+            get { return _gunInfos; }
+        }
+
+        private void Awake()
+        {
+            _instance = this;
+        }
+
+        [SerializeField]
+        private static int initCoinGive = 100;
         public static int TotalCoins()
         {
+            if(!PlayerPrefs.HasKey("Coins"))
+                PlayerPrefs.SetInt("Coins", initCoinGive);
+
             return PlayerPrefs.GetInt("Coins");
         }
 
         public static void AddCoins(int coins)
         {
             PlayerPrefs.SetInt("Coins", TotalCoins() + coins);
+        }
+        public static void MinusCoin(int price)
+        {
+            PlayerPrefs.SetInt("Coins", TotalCoins() - price);
         }
 
         public static int GetIndexStopLevelOn(int indexEnvironment)
@@ -46,34 +72,14 @@ namespace game.data
             return PlayerPrefs.GetInt("StarsOnLevel E:" + indexEnvironment + " L: " + indexLevel);
         }
 
-        public static void BuyGun(int gunIndex, int price)
-        {
-            UnlockThisGun(gunIndex);
-            MinusPrice(price);
-        }
-        public static void MinusPrice(int price)
-        {
-            PlayerPrefs.SetInt("Coins", TotalCoins() - price);
-        }
-        public static int GetCurrentGunUsed()
-        {
-            return PlayerPrefs.GetInt("Get Current Gun Used");
-        }
-
-        public static void SetCurrentGunUsed(int indexGun)
-        {
-            PlayerPrefs.SetInt("Get Current Gun Used", indexGun);
-        }
-
-        public static bool IsItUnlockedThisGun(int indexGun)
+        public static bool WeHaveThisGun(int indexGun)
         {
             if (indexGun == 0 || indexGun == 1) // If Index of first gun we will use it.
                 return true;
 
             return PlayerPrefs.HasKey("Gun Unlocked" + indexGun);
         }
-
-        public static void UnlockThisGun(int indexGun)
+        public static void TakeThisGun(int indexGun)
         {
             PlayerPrefs.SetInt("Gun Unlocked" + indexGun, 1);
         }

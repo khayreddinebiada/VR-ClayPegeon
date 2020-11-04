@@ -25,6 +25,7 @@ namespace game.movement
         private ControllerGun _controllerGun;
         private ControllerInputs _controllerInputs;
 
+
         private void Awake()
         {
             _controllerInputs = GetComponent<ControllerInputs>();
@@ -46,7 +47,7 @@ namespace game.movement
             }
             if (_setShooting)
             {
-                _gun.body.transform.Rotate(_gun.movingOnShoot * focusSpeed * Time.deltaTime);
+                _controllerGun.body.transform.Rotate(_gun.movingOnShoot * focusSpeed * Time.deltaTime);
             }
         }
 
@@ -57,7 +58,7 @@ namespace game.movement
 
         private void ResetRotation()
         {
-            _gun.body.transform.localRotation = Quaternion.RotateTowards(_gun.body.transform.localRotation, Quaternion.identity, speedResetRotation * Time.deltaTime);
+            _controllerGun.body.transform.localRotation = Quaternion.RotateTowards(_controllerGun.body.transform.localRotation, Quaternion.identity, speedResetRotation * Time.deltaTime);
         }
 
         public void Shooting()

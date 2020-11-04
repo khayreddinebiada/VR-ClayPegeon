@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 8
   _name: BM4 Shotgun
-  _unlockLevel: -1
-  _price: -1
+  _unlockLevel: 20
+  _prefabOnPlay: {fileID: 2147296531458058283, guid: 9d4fa6786c028e84daf99245b1cecf2e,
+    type: 3}
+  _isShootgun: 1
+  _price: 2000
   _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
   gunContain: 0
   _maxBulletInGun: 2
   maxSavingBullets: 12
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _bullet: {fileID: 0}
   _focusRadius: 0
-  _body: {fileID: 0}

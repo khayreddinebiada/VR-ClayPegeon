@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using game.control;
-using System.Collections;
-using UnityEngine.Events;
-using game.ui;
+﻿using game.control;
 using game.data;
+using game.ui;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace game.manager
 {
@@ -11,9 +11,28 @@ namespace game.manager
     {
 
         public static GameManager instance;
-        public ControllerGun controllerGun;
-        public TargetManager targetManager;
 
+        [Header("Components")]
+        [SerializeField]
+        private ControllerGun _controllerGun;
+        public ControllerGun controllerGun
+        {
+            get { return _controllerGun; }
+        }
+
+        [SerializeField]
+        private Transform gunPosition;
+        [SerializeField]
+        private Transform gunParent;
+
+        [SerializeField]
+        private TargetManager _targetManager;
+        public TargetManager targetManager
+        {
+            get { return _targetManager; }
+        }
+
+        [Header("Win and Loss")]
         [SerializeField]
         private int minPointsFor2Stars = 20;
         [SerializeField]
@@ -23,15 +42,18 @@ namespace game.manager
         [SerializeField]
         private UnityEvent onLost;
 
+        [Header("Bullets and Coin")]
         [SerializeField]
-        private int scaleTimeCoin = 1;
+        private int _bulletOnLevel = 5;
         [SerializeField]
-        private int scaleStarCoin = 10;
+        private int _scaleTimeCoin = 1;
+        [SerializeField]
+        private int _scaleStarCoin = 10;
 
-        private int coinsOnThisLevel = 0;
-        private bool isPaused = false;
-        private bool gameEnd = false;
-        private float time;
+        private int _coinsOnThisLevel = 0;
+        private bool _isPaused = false;
+        private bool _gameEnd = false;
+        private float _time;
         
 
         // Start is called before the first frame update
@@ -40,13 +62,23 @@ namespace game.manager
             instance = this;
         }
 
+        private void Start()
+        {
+            // if no gun in the level we will instance one that used from player.
+            if(controllerGun == null)
+            {
+                _controllerGun = Instantiate(GlobalData.instance.gunInfos[GlobalData.GetIndexCurrentGun()].prefabOnPlay, gunPosition.position, gunPosition.rotation, gunParent).GetComponent<ControllerGun>();
+            }
+            _controllerGun.gun.gunContain = _bulletOnLevel;
+        }
+
         // Update is called once per frame
         void Update()
         {
-            if (!isPaused && gameEnd)
+            if (!_isPaused && _gameEnd)
                 return;
 
-            time += Time.deltaTime;
+            _time += Time.deltaTime;
             if (controllerGun.gun.gunContain == 0 && controllerGun.gun.maxSavingBullets == 0)
             {
                 EndGame();
@@ -55,14 +87,14 @@ namespace game.manager
 
         public void EndGame()
         {
-            gameEnd = true;
+            _gameEnd = true;
             int starsNumber;
 
             if (minPointsFor3Stars <= targetManager.GetTotalPoints())
             {
                 starsNumber = 3;
-                coinsOnThisLevel = CalculateCoin(starsNumber);
-                MainCanvasManager.instance.PlayerWin((int)time, coinsOnThisLevel, targetManager.GetTotalPoints());
+                _coinsOnThisLevel = CalculateCoin(starsNumber);
+                MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
                 onWin.Invoke();
             }
             else
@@ -70,15 +102,15 @@ namespace game.manager
                 if (minPointsFor2Stars <= targetManager.GetTotalPoints())
                 {
                     starsNumber = 2;
-                    coinsOnThisLevel = CalculateCoin(starsNumber);
-                    MainCanvasManager.instance.PlayerWin((int)time, coinsOnThisLevel, targetManager.GetTotalPoints());
+                    _coinsOnThisLevel = CalculateCoin(starsNumber);
+                    MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
                     onWin.Invoke();
                 }
                 else
                 {
                     starsNumber = 1;
-                    coinsOnThisLevel = CalculateCoin(starsNumber);
-                    MainCanvasManager.instance.PlayerLost((int)time, coinsOnThisLevel, targetManager.GetTotalPoints());
+                    _coinsOnThisLevel = CalculateCoin(starsNumber);
+                    MainCanvasManager.instance.PlayerLost((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
                     onLost.Invoke();
                 }
             }
@@ -88,7 +120,7 @@ namespace game.manager
 
         private int CalculateCoin(int stars)
         {
-            int coins = (60 - (int)time) * scaleTimeCoin + stars * scaleStarCoin;
+            int coins = (60 - (int)_time) * _scaleTimeCoin + stars * _scaleStarCoin;
             GlobalData.AddCoins(coins);
             return coins;
         }
@@ -102,22 +134,22 @@ namespace game.manager
 
         public bool GameIsPaused()
         {
-            return isPaused;
+            return _isPaused;
         }
 
         public void MakePause()
         {
-            isPaused = false;
+            _isPaused = false;
         }
 
         public void MakeUnpause()
         {
-            isPaused = true;
+            _isPaused = true;
         }
 
         public float GetCurrentTime()
         {
-            return time;
+            return _time;
         }
     }
 }
