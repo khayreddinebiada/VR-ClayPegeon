@@ -20,9 +20,9 @@ MonoBehaviour:
   _isShootgun: 1
   _price: 2000
   _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
-  gunContain: 0
-  _maxBulletInGun: 2
+  gunContain: 5
+  _maxBulletInGun: 5
   maxSavingBullets: 12
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _focusRadius: 0
+  _focusRadius: 0.01

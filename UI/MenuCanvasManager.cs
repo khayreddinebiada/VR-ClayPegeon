@@ -24,7 +24,14 @@ namespace game.ui
         private ControllerInputs controllerInputs;
 
         [Header("Gun Info")]
+        [SerializeField]
         private Image movingOnShoot;
+        [SerializeField]
+        private Image focusRadius;
+        [SerializeField]
+        private Image additionalBullets;
+
+        private GunInfo _gunInfo;
 
 
 
@@ -33,17 +40,19 @@ namespace game.ui
             instance = this;
         }
 
+
         void Start()
         {
             if (!showHitPoint)
             {
                 hitPoint.gameObject.SetActive(false);
             }
+
+            UpdateGunInfo();
         }
 
         void Update()
         {
-
 #if !UNITY_EDITOR
             hand.transform.rotation = GetControllerHandRotation();
 #endif
@@ -55,6 +64,12 @@ namespace game.ui
                 if(button != null)
                     button.onClick.Invoke();
             }
+        }
+
+        public void UpdateGunInfo()
+        {
+            _gunInfo = GlobalData.instance.GetCurrentGunInfo();
+            _gunInfo.UpdateDataOnCanvas(movingOnShoot, focusRadius, additionalBullets);
         }
 
         private void UpdateHitPoint()
@@ -86,7 +101,6 @@ namespace game.ui
                     }
                 }
             }
-
         }
 
         public Quaternion GetControllerHandRotation()

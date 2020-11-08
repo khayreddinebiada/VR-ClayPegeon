@@ -20,13 +20,21 @@ namespace game.store
         [SerializeField]
         private Image LockImage;
 
-        [SerializeField]
+        [Header("Gun Info")]
         private GunInfo _gunInfo;
         public GunInfo gunInfo
         {
             get { return _gunInfo; }
             set { _gunInfo = value; }
         }
+
+        [SerializeField]
+        private Image movingOnShoot;
+        [SerializeField]
+        private Image focusRadius;
+        [SerializeField]
+        private Image additionalBullets;
+
         private bool isBaught = false;
         private bool isLock = false;
 
@@ -34,6 +42,7 @@ namespace game.store
         private void Start()
         {
             Refresh();
+            _gunInfo.UpdateDataOnCanvas(movingOnShoot, focusRadius, additionalBullets);
         }
 
         public void Refresh()

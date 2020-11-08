@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60405ee746050ce4a9500518d4d8f55b, type: 3}
-  m_Name: 01- Cowboy Rifle
+  m_Name: Perfect Gun
   m_EditorClassIdentifier: 
-  _index: 1
-  _name: ' Cowboy Rifle'
+  _index: 0
+  _name: 
   _unlockLevel: -1
-  _prefabOnPlay: {fileID: 3508132248569454543, guid: d43ed666c38e49b4ca7b256ba2edda60,
-    type: 3}
-  _isShootgun: 1
+  _prefabOnPlay: {fileID: 0}
+  _isShootgun: 0
   _price: -1
   _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
-  gunContain: 5
-  _maxBulletInGun: 5
-  maxSavingBullets: 12
+  gunContain: 0
+  _maxBulletInGun: 2
+  maxSavingBullets: 10
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _focusRadius: 0.01
+  _focusRadius: 0

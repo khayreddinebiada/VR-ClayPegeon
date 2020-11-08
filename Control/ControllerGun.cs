@@ -205,8 +205,8 @@ namespace game.control
                 Target target = hit.transform.GetComponent<Target>();
                 if (target != null)
                 {
-                    target.onHit.Invoke();
                     target.CalculateScoreOnHit(hit.point);
+                    target.onHit.Invoke();
                 }
             }
         }
@@ -223,8 +223,8 @@ namespace game.control
                 if (target != null)
                 {
                     obj.transform.SetParent(target.body.transform);
-                    target.onHit.Invoke();
                     target.CalculateScoreOnHit(hit.point);
+                    target.onHit.Invoke();
                 }
             }
         }

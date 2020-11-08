@@ -77,6 +77,7 @@ namespace game.objects
                 return;
 
             float distance = Vector3.Distance(hitPointPosition, center.position) / radius;
+
             for (int i = 0; i < scoreRanges.Length - 1; i++)
             {
                 if (scoreRanges[i] <= distance && distance < scoreRanges[i + 1])
@@ -85,6 +86,7 @@ namespace game.objects
                     return;
                 }
             }
+
             score = 5;
             return;
         }

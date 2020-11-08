@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace game.data
 {
@@ -81,5 +82,21 @@ namespace game.data
             get { return _focusRadius; }
         }
 
+        [SerializeField]
+        [Range(0,1)]
+        private float percentMovingOnShoot = 0.1f;
+        [SerializeField]
+        [Range(0, 1)]
+        private float percentFocusRadius = 0.1f;
+        [SerializeField]
+        [Range(0,1)]
+        private float percentAdditionalBullets = 0.1f;
+
+        public void UpdateDataOnCanvas(Image imageMovingOnShoot, Image imageFocusRadius, Image imageAdditionalBullets)
+        {
+            imageMovingOnShoot.fillAmount = percentMovingOnShoot;
+            imageFocusRadius.fillAmount = percentFocusRadius;
+            imageAdditionalBullets.fillAmount = percentAdditionalBullets;
+        }
     }
 }

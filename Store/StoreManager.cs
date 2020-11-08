@@ -45,7 +45,7 @@ namespace game.store
         void Start()
         {
             _gunInfos = GlobalData.instance.gunInfos;
-            _currentLevelIndex = GlobalData.GetIndexLevelsWin();
+            _currentLevelIndex = GlobalData.GetTotalLevelsWin();
 
             products = new Product[_gunInfos.Length];
 
