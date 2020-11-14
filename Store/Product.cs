@@ -19,6 +19,8 @@ namespace game.store
         private Image buttonSelected;
         [SerializeField]
         private Image LockImage;
+        [SerializeField]
+        private Text textPrice;
 
         [Header("Gun Info")]
         private GunInfo _gunInfo;
@@ -53,6 +55,7 @@ namespace game.store
                 isLock = false;
                 isBaught = true;
                 ChoiceThisGun();
+                textPrice.text = "";
                 return;
             }
             if (GlobalData.WeHaveThisGun(_gunInfo.Index))
@@ -60,6 +63,7 @@ namespace game.store
                 isLock = false;
                 isBaught = true;
                 SelectableGun();
+                textPrice.text = "";
                 return;
             }
             if (StoreManager.instance.currentLevelIndex < _gunInfo.unlockLevel)
@@ -74,6 +78,7 @@ namespace game.store
 
         private void MakeForBuy()
         {
+            textPrice.text = gunInfo.price.ToString() + "$";
             isLock = false;
             isBaught = false;
             buttonSelected.gameObject.SetActive(false);
@@ -135,6 +140,7 @@ namespace game.store
                     GlobalData.ChangeIndexCurrentGun(_gunInfo.Index);
                     GlobalData.MinusCoin(_gunInfo.price);
                     GlobalData.TakeThisGun(_gunInfo.Index);
+                    MenuCanvasManager.instance.UpdatePrice();
                     DeselectLastProduct();
                     ChoiceThisGun();
                 }

@@ -5,36 +5,38 @@ namespace game.ui
 {
     public class LevelsManager : MonoBehaviour
     {
-        [SerializeField]
-        private int currentEnvironment;
-        [SerializeField]
-        private int LevelNumber;
-        private Level[] levels;
 
+        [SerializeField]
+        private Environment environment;
         [SerializeField]
         private GameObject prefabLevel;
         [SerializeField]
         private Transform content;
 
+        private int _levelsNumber;
+        private Level[] levels;
+
+
         // Start is called before the first frame update
         private void Start()
         {
-            int levelsWin = GlobalData.GetTotalLevelsWinOnEnv(currentEnvironment);
-
-            levels = new Level[LevelNumber];
-
-            for (int i = 0; i < LevelNumber; i++)
+            int levelsWin = GlobalData.GetTotalLevelsWinOnEnv(environment.indexEnvironment);
+            print("Level: " + levelsWin + ", Environment: " + environment.indexEnvironment);
+            _levelsNumber = GlobalData.GetTotalLevels(environment.indexEnvironment);
+            levels = new Level[_levelsNumber];
+            for (int i = 0; i < _levelsNumber; i++)
             {
                 levels[i] = Instantiate(prefabLevel, content).GetComponent<Level>();
-                levels[i].starsNumber = GlobalData.GetStarsOnLevel(currentEnvironment, i);
+                levels[i].levelIndex = i + 1;
+                levels[i].starsNumber = GlobalData.GetStarsOnLevel(environment.indexEnvironment, i);
 
                 if (i <= levelsWin)
                 {
-                    levels[i].levelUnlock = true;
+                    levels[i].levelLocked = false;
                 }
                 else
                 {
-                    levels[i].levelUnlock = false;
+                    levels[i].levelLocked = true;
                 }
             }
         }

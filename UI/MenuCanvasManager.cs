@@ -1,6 +1,7 @@
 ﻿using game.control;
 using game.data;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace game.ui
@@ -8,6 +9,7 @@ namespace game.ui
     public class MenuCanvasManager : MonoBehaviour
     {
         public static MenuCanvasManager instance;
+
         [Header("Controllers")]
         [SerializeField]
         private Hand hand;
@@ -31,7 +33,13 @@ namespace game.ui
         [SerializeField]
         private Image additionalBullets;
 
+        [Header("UI")]
+        [SerializeField]
+        private GameObject loadingPanel;
         private GunInfo _gunInfo;
+        [SerializeField]
+        private Text _textPrice;
+
 
 
 
@@ -49,21 +57,21 @@ namespace game.ui
             }
 
             UpdateGunInfo();
+            UpdatePrice();
         }
 
-        void Update()
+        void LateUpdate()
         {
 #if !UNITY_EDITOR
             hand.transform.rotation = GetControllerHandRotation();
-#endif
             UpdateHitPoint();
-
             if (controllerInputs.isShootingDown && _hit.collider != null)
             {
                 Button button = _hit.collider.gameObject.GetComponent<Button>();
-                if(button != null)
+                if(button != null && button.enabled)
                     button.onClick.Invoke();
             }
+#endif
         }
 
         public void UpdateGunInfo()
@@ -95,12 +103,19 @@ namespace game.ui
                 if (_hit.collider != null)
                 {
                     Button button = _hit.collider.gameObject.GetComponent<Button>();
-                    if (button != null)
+                    if (button != null && button.enabled)
                     {
                         button.onClick.Invoke();
                     }
                 }
             }
+        }
+
+        public void Play()
+        {
+            int envi = EnvironmentsManager.instance.indexCurrentEnvironment;
+            SceneManager.LoadSceneAsync("Level" + (envi + 1));
+            loadingPanel.SetActive(true);
         }
 
         public Quaternion GetControllerHandRotation()
@@ -110,5 +125,9 @@ namespace game.ui
             return rotation;
         }
 
+        public void UpdatePrice()
+        {
+            _textPrice.text = GlobalData.TotalCoins().ToString() + "$";
+        }
     }
 }

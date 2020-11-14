@@ -1,4 +1,5 @@
-﻿using game.manager;
+﻿using game.data;
+using game.manager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +30,14 @@ namespace game.ui
         private Text textCoinOnWin;
         [SerializeField]
         private Text textPointOnWin;
+        [SerializeField]
+        private Text textBonus;
+        [SerializeField]
+        private GameObject _newEnvironmentPanel;
+        public GameObject newEnvironmentPanel
+        {
+            get { return _newEnvironmentPanel; }
+        }
 
         [Header("On Lost")]
         [SerializeField]
@@ -38,7 +47,7 @@ namespace game.ui
         [SerializeField]
         private Text textPointOnLost;
 
-
+        [Header("End Game")]
         [SerializeField]
         private Animator starAnim;
 
@@ -105,7 +114,15 @@ namespace game.ui
             textPointOnWin.text = points.ToString();
         }
 
+        public void GoToNextLevel()
+        {
+            GameManager.instance.GoToTheNextLevel();
+        }
 
+        public void AddBonus(int bonusAmount)
+        {
+            textBonus.text = "+" + bonusAmount.ToString() + "$";
+        }
 
         public void RemoveOneBullet(int total)
         {
@@ -115,12 +132,12 @@ namespace game.ui
 
         public void Replay()
         {
-            print("Replay");
+            GameManager.instance.Replay();
         }
 
-        public void NextLevel()
+        public void GoMenu()
         {
-            print("NextLevel");
+            GameManager.instance.GoMenu();
         }
     }
 }

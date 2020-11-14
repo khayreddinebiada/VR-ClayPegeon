@@ -32,7 +32,7 @@ namespace game.data
         #endregion
         #region coin
         [SerializeField]
-        private static int initCoinGive = 100;
+        private static int initCoinGive = 10000;
         public static int TotalCoins()
         {
             if(!PlayerPrefs.HasKey("Coins"))
@@ -51,14 +51,55 @@ namespace game.data
         }
         #endregion
         #region Levels
-        public static int GetIndexStopLevelOn(int indexEnvironment)
+        private static int _totalLevels = 30;
+        public static int GetTotalLevels()
         {
-            return PlayerPrefs.GetInt("Stop Level On" + indexEnvironment);
+            return _totalLevels;
+        }
+        public static int GetTotalLevels(int indexEnv)
+        {
+            switch (indexEnv)
+            {
+                case 0:
+                    return 10;
+                case 1:
+                    return 10;
+                case 2:
+                    return 10;
+                    
+            }
+
+            return 0;
+        }
+
+        public static void MakeCompleteEnvironment(int index)
+        {
+            PlayerPrefs.SetInt("Environment Completed" + index, 1);
+        }
+
+        public static bool EnvironmentIsCompleted(int index)
+        {
+            return PlayerPrefs.HasKey("Environment Completed" + index);
         }
 
         public static int GetTotalStars()
         {
             return PlayerPrefs.GetInt("Total Stars");
+        }
+
+        public static void SetLevelPlayOn(int indexEnvironment, int indexLevel)
+        {
+            PlayerPrefs.SetInt("Level Play On", indexLevel);
+            PlayerPrefs.SetInt("Environment Play On", indexEnvironment);
+        }
+
+        public static int GetLevelPlayOn()
+        {
+            return PlayerPrefs.GetInt("Level Play On");
+        }
+        public static int GetEnvironmentPlayOn()
+        {
+            return PlayerPrefs.GetInt("Environment Play On");
         }
 
         private static void AddStarsOnTotal(int stars)
@@ -83,7 +124,13 @@ namespace game.data
 
         public static void AddNewLevelInWinListOnEnv(int indexEnvironment)
         {
-            PlayerPrefs.SetInt("Total Level Win Env E:" + indexEnvironment, GetTotalLevelsWin() + 1);
+            int tw = GetTotalLevelsWin();
+            if (GetTotalLevels(indexEnvironment) == tw)
+            {
+                MakeCompleteEnvironment(indexEnvironment);
+                return;
+            }
+            PlayerPrefs.SetInt("Total Level Win Env E:" + indexEnvironment, tw + 1);
         }
 
         public static void SetStarsOnLevel(int indexEnvironment, int indexLevel, int newValue)
@@ -100,8 +147,7 @@ namespace game.data
                 return;
 
             AddStarsOnTotal(newValue - oldValue);
-
-            PlayerPrefs.SetInt("StarsOnLevel E:" + indexEnvironment + " L: " + indexLevel, newValue);
+            PlayerPrefs.SetInt("StarsOnLevel E:" + indexEnvironment + " L: " + indexLevel, newValue - oldValue);
         }
 
         public static int GetStarsOnLevel(int indexEnvironment, int indexLevel)

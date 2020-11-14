@@ -55,6 +55,8 @@ namespace game.objects
                     GetComponent<Animator>().enabled = true;
                 });
             }
+
+            radius = radius * transform.localScale.x;
         }
 
         private void OnDrawGizmos()

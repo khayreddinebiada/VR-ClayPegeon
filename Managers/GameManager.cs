@@ -3,6 +3,7 @@ using game.data;
 using game.ui;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
 namespace game.manager
@@ -12,20 +13,34 @@ namespace game.manager
 
         public static GameManager instance;
 
+        [SerializeField]
+        private GameObject[] prefabLevels;
+        private GameObject currentLevelPrefab;
+
+        [Header("Levels Info")]
+        private int _currentLevel = 0;
+        [SerializeField]
+        private bool isLastEnvironment = false;
+        [SerializeField]
+        private int _currentEnvironment = 0;
+        [SerializeField]
+        private int _bonusAmount = 1500;
+
         [Header("Components")]
         [SerializeField]
+        private Transform numbers;
+        [SerializeField]
+        private Transform gunPosition;
+        [SerializeField]
+        private Transform gunParent;
+
         private ControllerGun _controllerGun;
         public ControllerGun controllerGun
         {
             get { return _controllerGun; }
         }
 
-        [SerializeField]
-        private Transform gunPosition;
-        [SerializeField]
-        private Transform gunParent;
 
-        [SerializeField]
         private TargetManager _targetManager;
         public TargetManager targetManager
         {
@@ -42,13 +57,6 @@ namespace game.manager
         [SerializeField]
         private UnityEvent onLost;
 
-        [Header("Bullets and Coin")]
-        [SerializeField]
-        private int _bulletOnLevel = 5;
-        [SerializeField]
-        private int _scaleTimeCoin = 1;
-        [SerializeField]
-        private int _scaleStarCoin = 10;
 
         private int _coinsOnThisLevel = 0;
         private bool _isPaused = false;
@@ -60,6 +68,10 @@ namespace game.manager
         void Awake()
         {
             instance = this;
+            _currentLevel = GlobalData.GetLevelPlayOn();
+            currentLevelPrefab = Instantiate(prefabLevels[_currentLevel]);
+            _targetManager = currentLevelPrefab.GetComponent<TargetManager>();
+            _targetManager.numbers = numbers;
         }
 
         private void Start()
@@ -69,7 +81,8 @@ namespace game.manager
             {
                 _controllerGun = Instantiate(GlobalData.instance.gunInfos[GlobalData.GetIndexCurrentGun()].prefabOnPlay, gunPosition.position, gunPosition.rotation, gunParent).GetComponent<ControllerGun>();
             }
-            _controllerGun.gun.gunContain = _bulletOnLevel;
+            _controllerGun.gun.gunContain = _targetManager.bulletOnLevel;
+
         }
 
         // Update is called once per frame
@@ -87,40 +100,98 @@ namespace game.manager
 
         public void EndGame()
         {
+            if (_gameEnd)
+                return;
+
             _gameEnd = true;
             int starsNumber;
 
             if (minPointsFor3Stars <= targetManager.GetTotalPoints())
             {
                 starsNumber = 3;
-                _coinsOnThisLevel = CalculateCoin(starsNumber);
-                MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
-                onWin.Invoke();
+                WinLevel(starsNumber);
             }
             else
             {
                 if (minPointsFor2Stars <= targetManager.GetTotalPoints())
                 {
                     starsNumber = 2;
-                    _coinsOnThisLevel = CalculateCoin(starsNumber);
-                    MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
-                    onWin.Invoke();
+                    WinLevel(starsNumber);
                 }
                 else
                 {
                     starsNumber = 1;
-                    _coinsOnThisLevel = CalculateCoin(starsNumber);
-                    MainCanvasManager.instance.PlayerLost((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
-                    onLost.Invoke();
+                    LostLevel();
                 }
             }
 
+            GlobalData.SetStarsOnLevel(_currentEnvironment, _currentLevel, starsNumber);
             StartCoroutine(WaitAndMakeAnimation(starsNumber));
+        }
+
+        private void WinLevel(int starsNumber)
+        {
+            if(IsLastLevel())
+            {
+                MainCanvasManager.instance.newEnvironmentPanel.SetActive(true);
+                AddBonus(_bonusAmount);
+            }
+            _coinsOnThisLevel = CalculateCoin(starsNumber);
+            MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
+            onWin.Invoke();
+        }
+        private void AddBonus(int bonusAmount)
+        {
+            MainCanvasManager.instance.AddBonus(bonusAmount);
+            GlobalData.AddCoins(bonusAmount);
+        }
+        private void LostLevel()
+        {
+            _coinsOnThisLevel = CalculateCoin(1);
+            MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
+            onWin.Invoke();
+        }
+
+        public void GoToTheNextLevel()
+        {
+            if (IsLastLevel())
+            {
+                if (!isLastEnvironment)
+                {
+                    SceneManager.LoadSceneAsync("Level" + (_currentEnvironment + 2));
+                }
+                else
+                {
+                    SceneManager.LoadSceneAsync("Game finished");
+                }
+            }
+            else
+            {
+                GlobalData.SetLevelPlayOn(_currentEnvironment, _currentLevel + 1);
+                SceneManager.LoadSceneAsync("Level" + (_currentEnvironment + 1));
+            }
+
+        }
+
+        public void Replay()
+        {
+            GlobalData.SetLevelPlayOn(_currentEnvironment, _currentLevel);
+            SceneManager.LoadSceneAsync("Level" + (_currentEnvironment + 1));
+        }
+
+        public void GoMenu()
+        {
+            SceneManager.LoadSceneAsync("Menu");
+        }
+
+        public bool IsLastLevel()
+        {
+            return prefabLevels.Length -1 <= _currentLevel;
         }
 
         private int CalculateCoin(int stars)
         {
-            int coins = (60 - (int)_time) * _scaleTimeCoin + stars * _scaleStarCoin;
+            int coins = (60 - (int)_time) * _targetManager.scaleTimeCoin + stars * _targetManager.scaleStarCoin;
             GlobalData.AddCoins(coins);
             return coins;
         }

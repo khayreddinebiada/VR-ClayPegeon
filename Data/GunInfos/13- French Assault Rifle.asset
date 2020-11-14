@@ -18,11 +18,14 @@ MonoBehaviour:
   _prefabOnPlay: {fileID: 6884059463655230194, guid: e0990352a7bc2dc498c6e5e5a94389da,
     type: 3}
   _isShootgun: 0
-  _price: 2000
-  _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
+  _price: 3349
+  _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
   maxSavingBullets: 12
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _focusRadius: 0.01
+  _focusRadius: 0.0041
+  percentMovingOnShoot: 0.55
+  percentFocusRadius: 0.6
+  percentAdditionalBullets: 0.3

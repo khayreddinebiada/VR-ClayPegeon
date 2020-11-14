@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60405ee746050ce4a9500518d4d8f55b, type: 3}
-  m_Name: 01- Cowboy Rifle
+  m_Name: 01-- Cowboy Rifle
   m_EditorClassIdentifier: 
   _index: 1
   _name: ' Cowboy Rifle'
@@ -19,10 +19,13 @@ MonoBehaviour:
     type: 3}
   _isShootgun: 1
   _price: -1
-  _movingOnShoot: {x: -0.5, y: 0.1, z: 0}
+  _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
   maxSavingBullets: 12
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
-  _focusRadius: 0.01
+  _focusRadius: 0.008
+  percentMovingOnShoot: 0.12
+  percentFocusRadius: 0.1
+  percentAdditionalBullets: 0

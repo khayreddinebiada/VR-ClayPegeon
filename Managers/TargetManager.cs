@@ -23,13 +23,31 @@ namespace game.manager
         private Target[] _targets;
 
         private int targetHited = 0;
-        [SerializeField]
-        private Transform numbers;
+        public Transform numbers;
         private Audio[] audioNumbers;
+
+        [Header("Bullets and Coin")]
+        [SerializeField]
+        private int _bulletOnLevel = 5;
+        public int bulletOnLevel
+        {
+            get { return _bulletOnLevel; }
+        }
+        [SerializeField]
+        private int _scaleTimeCoin = 1;
+        public int scaleTimeCoin
+        {
+            get { return _scaleTimeCoin; }
+        }
+        [SerializeField]
+        private int _scaleStarCoin = 10;
+        public int scaleStarCoin
+        {
+            get { return _scaleStarCoin; }
+        }
 
         void Awake()
         {
-            audioNumbers = numbers.GetComponentsInChildren<Audio>();
 
             instance = this;
             _targets = GetComponentsInChildren<Target>();
@@ -38,7 +56,8 @@ namespace game.manager
         // Start is called before the first frame update
         void Start()
         {
-            switch(targetType)
+            audioNumbers = numbers.GetComponentsInChildren<Audio>();
+            switch (targetType)
             {
                 case TargetType.OneByOne:
                     _targets[targetHited].StartShowTarget();
