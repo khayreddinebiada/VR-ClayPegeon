@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 3
   _name: 9mm Heavy Pistol
-  _unlockLevel: 0
+  _unlockLevel: -1
   _prefabOnPlay: {fileID: 6165312698412690327, guid: 40e7553db37eb964a94bb17e9e6e8610,
     type: 3}
   _isShootgun: 0

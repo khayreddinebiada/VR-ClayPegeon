@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 5
   _name: 12 Gauge Automatic Shotgun
-  _unlockLevel: 20
+  _unlockLevel: 7
   _prefabOnPlay: {fileID: 2591528334497309953, guid: bd677b9eabd78a5438305ccbc5487b8d,
     type: 3}
   _isShootgun: 1
@@ -22,7 +22,7 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 0
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0066

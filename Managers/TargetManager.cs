@@ -1,4 +1,4 @@
-﻿using game.objects;
+﻿using game.target;
 using game.others;
 using game.ui;
 using System.Collections.Generic;
@@ -46,15 +46,19 @@ namespace game.manager
             get { return _scaleStarCoin; }
         }
 
-        void Awake()
+        private void Awake()
         {
-
             instance = this;
             _targets = GetComponentsInChildren<Target>();
+
+            for (int i = 0; i < _targets.Length; i++)
+            {
+                _targets[i].index = i;
+            }
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             audioNumbers = numbers.GetComponentsInChildren<Audio>();
             switch (targetType)
@@ -80,7 +84,10 @@ namespace game.manager
             if (_targets[currentTargetIndexHited].isRemoved)
                 return;
 
-            audioNumbers[_targets[currentTargetIndexHited].GetScore() - 1].Play();
+            int score = _targets[currentTargetIndexHited].GetScore();
+
+            if (0 < score && score <= audioNumbers.Length)
+                audioNumbers[score - 1].Play();
 
             totalPoints += _targets[currentTargetIndexHited].GetLastScoreForAdd();
 
@@ -99,7 +106,6 @@ namespace game.manager
                 if(targetType == TargetType.OneByOne)
                     _targets[currentTargetIndexHited].StartShowTarget();
             }
-
         }
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 2
   _name: 45 Automatic Pistol
-  _unlockLevel: 0
+  _unlockLevel: -1
   _prefabOnPlay: {fileID: 179470629347029253, guid: 7fd964f46e4214341970c9e3201b8855,
     type: 3}
   _isShootgun: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 0
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0072

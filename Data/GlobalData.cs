@@ -1,5 +1,5 @@
 ﻿using System;
-using game.objects;
+using game.target;
 using UnityEngine;
 
 namespace game.data

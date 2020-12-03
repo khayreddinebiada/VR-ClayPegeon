@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 17
   _name: Model 16 Assault Rifle
-  _unlockLevel: 20
+  _unlockLevel: 47
   _prefabOnPlay: {fileID: 6461545311323110928, guid: 089818236a6cbe847b6f9ffbd8b12407,
     type: 3}
   _isShootgun: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 4
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.001

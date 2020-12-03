@@ -12,12 +12,16 @@ namespace game.manager
     {
 
         public static GameManager instance;
+        [Header(" On Editor")]
+        [SerializeField]
+        private bool _modeTest = false;
+        [SerializeField]
+        private int _selectLevelForTest = 0;
 
+        [Header("Levels Info")]
         [SerializeField]
         private GameObject[] prefabLevels;
         private GameObject currentLevelPrefab;
-
-        [Header("Levels Info")]
         private int _currentLevel = 0;
         [SerializeField]
         private bool isLastEnvironment = false;
@@ -69,22 +73,31 @@ namespace game.manager
         {
             instance = this;
             _currentLevel = GlobalData.GetLevelPlayOn();
-            currentLevelPrefab = Instantiate(prefabLevels[_currentLevel]);
+            if (_modeTest)
+            {
+                currentLevelPrefab = Instantiate(prefabLevels[_selectLevelForTest]);
+            }
+            else
+            {
+                currentLevelPrefab = Instantiate(prefabLevels[_currentLevel]);
+            }
             _targetManager = currentLevelPrefab.GetComponent<TargetManager>();
             _targetManager.numbers = numbers;
         }
 
         private void Start()
         {
-            // if no gun in the level we will instance one that used from player.
-            if(controllerGun == null)
+            InitializeGun();
+        }
+
+        private void InitializeGun()
+        {
+            if (controllerGun == null)
             {
                 _controllerGun = Instantiate(GlobalData.instance.gunInfos[GlobalData.GetIndexCurrentGun()].prefabOnPlay, gunPosition.position, gunPosition.rotation, gunParent).GetComponent<ControllerGun>();
             }
             _controllerGun.gun.gunContain = _targetManager.bulletOnLevel;
-
         }
-
         // Update is called once per frame
         void Update()
         {
@@ -140,16 +153,18 @@ namespace game.manager
             MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
             onWin.Invoke();
         }
+
         private void AddBonus(int bonusAmount)
         {
             MainCanvasManager.instance.AddBonus(bonusAmount);
             GlobalData.AddCoins(bonusAmount);
         }
+
         private void LostLevel()
         {
             _coinsOnThisLevel = CalculateCoin(1);
-            MainCanvasManager.instance.PlayerWin((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
-            onWin.Invoke();
+            MainCanvasManager.instance.PlayerLost((int)_time, _coinsOnThisLevel, targetManager.GetTotalPoints());
+            onLost.Invoke();
         }
 
         public void GoToTheNextLevel()
@@ -158,6 +173,7 @@ namespace game.manager
             {
                 if (!isLastEnvironment)
                 {
+                    GlobalData.SetLevelPlayOn(_currentEnvironment, 1);
                     SceneManager.LoadSceneAsync("Level" + (_currentEnvironment + 2));
                 }
                 else

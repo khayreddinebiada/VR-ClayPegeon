@@ -1,6 +1,7 @@
 ﻿using game.data;
 using game.manager;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
 
 namespace game.ui
@@ -12,6 +13,10 @@ namespace game.ui
         [Header("View")]
         [SerializeField]
         private GameObject prefbBulletImage;
+        [SerializeField]
+        private GameObject _winPanel;
+        [SerializeField]
+        private GameObject _lostPanel;
 
         [Header("On Game")]
         [SerializeField]
@@ -59,7 +64,7 @@ namespace game.ui
 
         private void Update()
         {
-            timeOnGame.text = (secondToTime((int)GameManager.instance.GetCurrentTime()));
+            timeOnGame.text = (SecondToTime((int)GameManager.instance.GetCurrentTime()));
         }
 
         public void MakeStars(int numberStars)
@@ -78,7 +83,7 @@ namespace game.ui
             }
         }
 
-        private string secondToTime(int sec)
+        private string SecondToTime(int sec)
         {
             int minutes = Mathf.FloorToInt(sec / 60);
             int seconds = Mathf.FloorToInt(sec % 60);
@@ -102,16 +107,24 @@ namespace game.ui
 
         public void PlayerLost(float time, int coin, int points)
         {
-            textTimeOnLost.text = (secondToTime((int)GameManager.instance.GetCurrentTime()));
+            textTimeOnLost.text = (SecondToTime((int)GameManager.instance.GetCurrentTime()));
             textCoinOnLost.text = coin + "$";
             textPointOnLost.text = points.ToString();
+            StartCoroutine(WaitAndShowPanel(_lostPanel, 2));
         }
 
         public void PlayerWin(float time, int coin, int points)
         {
-            textTimeOnWin.text = (secondToTime((int)GameManager.instance.GetCurrentTime()));
+            textTimeOnWin.text = (SecondToTime((int)GameManager.instance.GetCurrentTime()));
             textCoinOnWin.text = coin + "$";
             textPointOnWin.text = points.ToString();
+            StartCoroutine(WaitAndShowPanel(_winPanel, 2));
+        }
+
+        private IEnumerator WaitAndShowPanel(GameObject panel, float time)
+        {
+            yield return new WaitForSeconds(time);
+            panel.SetActive(true);
         }
 
         public void GoToNextLevel()

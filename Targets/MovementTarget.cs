@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace game.objects
+namespace game.target
 {
     [RequireComponent(typeof(Target))]
     [RequireComponent(typeof(BoxCollider))]

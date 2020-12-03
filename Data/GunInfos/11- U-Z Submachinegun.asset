@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 11
   _name: U-Z Submachinegun
-  _unlockLevel: 20
+  _unlockLevel: 33
   _prefabOnPlay: {fileID: 7585403203873799789, guid: 9f12db8169e87e141bfac14bfe27d25e,
     type: 3}
   _isShootgun: 0
@@ -22,10 +22,10 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 2
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0054
   percentMovingOnShoot: 0.55
   percentFocusRadius: 0.45
-  percentAdditionalBullets: 0.2
+  percentAdditionalBullets: 0.4

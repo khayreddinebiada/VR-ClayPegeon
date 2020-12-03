@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 6
   _name: Model 10 Submachinegun
-  _unlockLevel: 20
+  _unlockLevel: 10
   _prefabOnPlay: {fileID: 1034492089370577700, guid: 30de50a8737eea34e83a683de3443552,
     type: 3}
   _isShootgun: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 0
   machineGun: 1
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0062

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 9
   _name: Czech Machine Pistol Extended
-  _unlockLevel: 20
+  _unlockLevel: 22
   _prefabOnPlay: {fileID: 4127465227502991659, guid: f2ca98d8b7dc575498ecd5143fc023b6,
     type: 3}
   _isShootgun: 0
@@ -22,10 +22,10 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 1
   machineGun: 1
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0059
   percentMovingOnShoot: 0.45
   percentFocusRadius: 0.35
-  percentAdditionalBullets: 0
+  percentAdditionalBullets: 0.2

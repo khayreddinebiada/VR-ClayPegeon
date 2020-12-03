@@ -22,10 +22,10 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 1
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0062
   percentMovingOnShoot: 0.27
   percentFocusRadius: 0.33
-  percentAdditionalBullets: 0
+  percentAdditionalBullets: 0.2

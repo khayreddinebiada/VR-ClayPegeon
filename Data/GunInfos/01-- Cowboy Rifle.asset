@@ -22,7 +22,7 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 0
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.008

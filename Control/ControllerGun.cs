@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using game.objects;
+using game.target;
 using game.movement;
 using game.animation;
 using game.manager;
@@ -178,17 +178,17 @@ namespace game.control
 
             float randX = Random.Range(-gun.focusRadius, gun.focusRadius);
             float randY = Random.Range(-gun.focusRadius, gun.focusRadius);
-
-            RaycastHit[] _hitPoint;
-            _hitPoint = Physics.RaycastAll(transform.position, _body.TransformDirection(Vector3.forward + new Vector3(randX, randY)), maxDistance, layerMaskEnvironment);
-            foreach (RaycastHit hit in _hitPoint)
+            /*
+            RaycastHit _hitPoint;
+            Physics.Raycast(transform.position, _body.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out _hitPoint, maxDistance, layerMaskEnvironment);
+            
+            */
+            RaycastHit[] hitGlass;
+            hitGlass = Physics.RaycastAll(transform.position, _body.TransformDirection(Vector3.forward + new Vector3(randX, randY)),  maxDistance, layerMaskEnvironment);
+            foreach (RaycastHit hit in hitGlass)
             {
-                CheckPointHits(hit);
+                CheckPointHitsGlass(hit);
             }
-
-            RaycastHit hitGlass;
-            Physics.Raycast(transform.position, _body.TransformDirection(Vector3.forward + new Vector3(randX, randY)), out hitGlass,  maxDistance, layerMaskEnvironment);
-            CheckPointHitsGlass(hitGlass);
 
             loop--;
             if (0 < loop && isShootgun)
@@ -200,7 +200,11 @@ namespace game.control
             if (hit.collider != null)
             {
                 if (!hit.collider.gameObject.CompareTag("Glass"))
+                {
+                    print("Object name: " + hit.collider.gameObject.name);
+                    CheckPointHits(hit);
                     return;
+                }
 
                 Target target = hit.transform.GetComponent<Target>();
                 if (target != null)
@@ -217,6 +221,8 @@ namespace game.control
             {
                 if (hit.collider.gameObject.CompareTag("Glass"))
                     return;
+
+                print(hit.collider.gameObject.name);
 
                 GameObject obj = Instantiate(bullEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
                 Target target = hit.transform.GetComponent<Target>();
@@ -265,7 +271,6 @@ namespace game.control
                 point.localScale = new Vector3(1, 1, 1) * maxDistance * scaleOfTargetPoint;
                 point.localPosition = Vector3.forward * maxDistance;
             }
-
         }
         #endregion
     }

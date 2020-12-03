@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 18
   _name: SC Assault Rifle
-  _unlockLevel: 20
+  _unlockLevel: 50
   _prefabOnPlay: {fileID: 732796639448945397, guid: 19a1ef3381fc24f43af7a2a926cb1df9,
     type: 3}
   _isShootgun: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 5
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0

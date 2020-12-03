@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 13
   _name: French Assault Rifle
-  _unlockLevel: 20
+  _unlockLevel: 37
   _prefabOnPlay: {fileID: 6884059463655230194, guid: e0990352a7bc2dc498c6e5e5a94389da,
     type: 3}
   _isShootgun: 0
@@ -22,10 +22,10 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 3
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0041
   percentMovingOnShoot: 0.55
   percentFocusRadius: 0.6
-  percentAdditionalBullets: 0.3
+  percentAdditionalBullets: 0.6

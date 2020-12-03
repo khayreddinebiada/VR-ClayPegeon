@@ -46,7 +46,7 @@ namespace game.lib
             {
                 transform.position = Vector3.MoveTowards(transform.position, movementPoint[_nextPointMoveIndex].transform.position, speedMoving * Time.fixedDeltaTime);
 
-                if (Vector3.Distance(transform.position, movementPoint[_nextPointMoveIndex].transform.position) == 0)
+                if (Vector3.Distance(transform.position, movementPoint[_nextPointMoveIndex].transform.position) <= 0.05f)
                     _nextPointMoveIndex++;
 
                 if (movementPoint.Length <= _nextPointMoveIndex)

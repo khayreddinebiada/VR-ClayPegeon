@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace game.objects
+namespace game.target
 {
     public class Target : MonoBehaviour
     {
@@ -10,7 +10,8 @@ namespace game.objects
         {
             TargetField = 0,
             Glass = 1,
-            Object  = 2
+            Object  = 2,
+            Can
         };
 
         public UnityEvent onHit;
@@ -45,28 +46,30 @@ namespace game.objects
 
         private void Awake()
         {
-            index = transform.GetSiblingIndex();
             targetManager = GetComponentInParent<TargetManager>();
             onHit.AddListener(() => targetManager.OnHitOneTarget(index));
 
-            if(targetType == TargetType.Glass)
+            if (targetType == TargetType.Glass)
             {
                 onHit.AddListener(() => {
                     GetComponent<Animator>().enabled = true;
                 });
             }
 
-            radius = radius * transform.localScale.x;
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (activateGizmas)
+            if (targetType == TargetType.Can)
             {
-                Gizmos.color = color;
-                Gizmos.DrawSphere(center.position, radius);
+                onHit.AddListener(() => {
+                    GetComponent<AddForce>().AddForceOnHit();
+                });
+            }
+
+            radius = radius * transform.localScale.x;
+            if(center == null && isScoreByPoints)
+            {
+                Debug.LogError("You need check IsScoreByPoints and Center Variables");
             }
         }
+
 
         public int GetScore()
         {
@@ -75,7 +78,7 @@ namespace game.objects
 
         public void CalculateScoreOnHit(Vector3 hitPointPosition)
         {
-            if (targetType != TargetType.TargetField)
+            if (!isScoreByPoints)
                 return;
 
             float distance = Vector3.Distance(hitPointPosition, center.position) / radius;
@@ -99,15 +102,23 @@ namespace game.objects
             {
                 if (destroyIfTouchFloor)
                 {
-                    onHit.Invoke();
+                    if (targetType != TargetType.Can)
+                        onHit.Invoke();
+                    else
+                    {
+                        targetManager.OnHitOneTarget(index);
+                    }
+
                 }
             }
         }
+
         public int GetLastScoreForAdd()
         {
             isRemoved = true;
             return score;
         }
+
         public void StartShowTarget()
         {
             switch (targetType)
@@ -118,5 +129,4 @@ namespace game.objects
             }
         }
     }
-
 }

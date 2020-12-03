@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _index: 16
   _name: AGU Assault Rifle
-  _unlockLevel: 20
+  _unlockLevel: 44
   _prefabOnPlay: {fileID: 1587271312919524305, guid: 791e4ffd31c254544bd9f6f62a68253c,
     type: 3}
   _isShootgun: 0
@@ -22,10 +22,10 @@ MonoBehaviour:
   _movingOnShoot: {x: -1, y: 0.3, z: 0}
   gunContain: 5
   _maxBulletInGun: 5
-  maxSavingBullets: 12
+  maxSavingBullets: 4
   machineGun: 0
   _detlaTimeBetweenBullets: 0.1
   _focusRadius: 0.0022
   percentMovingOnShoot: 0.7
   percentFocusRadius: 0.77
-  percentAdditionalBullets: 0.5
+  percentAdditionalBullets: 0.8
